@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>كورة بنعلالي 🌍⚽</title>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: #0d1b2a;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: gold;
+      font-size: 2.5em;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      background: #1b263b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #415a77;
+    }
+    pre {
+      text-align: left;
+      background: #1b263b;
+      padding: 15px;
+      border-radius: 10px;
+      overflow-x: auto;
+      max-width: 90%;
+      margin: auto;
+    }
+    input {
+      padding: 8px;
+      margin: 5px;
+      border-radius: 5px;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>كورة بنعلالي 🌍⚽</h1>
+  <div class="buttons">
+    <button onclick="getFixtures()">📅 مباريات اليوم</button>
+    <button onclick="getLeagues()">🌍 الدوريات</button>
+    <button onclick="getTeams()">👥 الفرق</button>
+    <button onclick="getNews()">📰 الأخبار</button>
+  </div>
+
+  <div style="margin-top: 30px;">
+    <h2>🔮 توقع نتيجة مباراة</h2>
+    <input type="text" id="homeTeam" placeholder="الفريق الأول">
+    <input type="text" id="awayTeam" placeholder="الفريق الثاني">
+    <button onclick="predictMatch()">توقع</button>
+  </div>
+
+  <pre id="results">اضغط على زر لعرض البيانات...</pre>
+
+  <script>
+    const API = "http://localhost:8000";
+
+    async function getFixtures() {
+      const res = await fetch(`${API}/fixtures/today`);
+      const data = await res.json();
+      document.getElementById("results").innerText = JSON.stringify(data, null, 2);
+    }
+
+    async function getLeagues() {
+      const res = await fetch(`${API}/leagues`);
+      const data = await res.json();
+      document.getElementById("results").innerText = JSON.stringify(data, null, 2);
+    }
+
+    async function getTeams() {
+      const res = await fetch(`${API}/teams`);
+      const data = await res.json();
+      document.getElementById("results").innerText = JSON.stringify(data, null, 2);
+    }
+
+    async function getNews() {
+      const res = await fetch(`${API}/news`);
+      const data = await res.json();
+      document.getElementById("results").innerText = JSON.stringify(data, null, 2);
+    }
+
+    async function predictMatch() {
+      const home = document.getElementById("homeTeam").value;
+      const away = document.getElementById("awayTeam").value;
+      const res = await fetch(`${API}/predict?home=${home}&away=${away}`);
+      const data = await res.json();
+      document.getElementById("results").innerText = `🔮 التوقع: ${data.prediction}`;
+    }
+  </script>
+</body>
+</html>
